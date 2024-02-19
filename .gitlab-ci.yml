@@ -1,0 +1,61 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+variables:
+  AWS_BASE_APP_NAME: "wonderapp"
+  # global url for all environments
+  AWS_ENVIRONMENT_URL: "https://%{environment_name}.nonprod.acme.domain"
+  # override for prod (late expansion of $AWS_BASE_APP_NAME not needed here)
+  AWS_PROD_ENVIRONMENT_URL: "https://$AWS_BASE_APP_NAME.acme.domain"
+  # override for review (using separate resource paths)
+  AWS_REVIEW_ENVIRONMENT_URL: "https://wonderapp-review.nonprod.acme.domain/%{environment_name}"
+
+image:
+  name: node:18.17.1-alpine
+
+.aws-prep: &aws-prep
+  - mkdir -p ~/.aws
+  - mkdir -p ~/.aws/credential
+  - echo [default] > ~/.aws/credential
+  - echo aws_access_key_id="${AWS_ACCESS_KEY_ID}" >> ~/.aws/credential
+  # - echo -e "[profile default]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+  - echo aws_secret_access_key="${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credential
+  - echo Default_region_name="${Default_region_name}" >> ~/.aws/credential
+
+stages:
+  - validate
+  - test
+  - run_query
+  - report
+
+validate:
+  before_script:
+    - *aws-prep    
+  stage: validate
+  script:
+    - awscli --version
+    - aws --profile default sts get-caller-identity 
+  only:
+    - branches
+
+sast:
+  stage: test
+include:
+- template: Security/SAST.gitlab-ci.yml
+
+run_query:
+  stage: run_query
+  script:
+    - echo "This is my first job!"
+    - aws athena start-query-execution --query-string "SELECT * FROM "db-athena-demo-008"."netflix" where type = 'Movie'" --query-execution-context Database=db-athena-demo-008 --result-configuration OutputLocation=s3://s3-athena-demo-out-tf-001/Output/
+  when: manual
+  only:
+    - main
+  after_script:
+    - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+
+
