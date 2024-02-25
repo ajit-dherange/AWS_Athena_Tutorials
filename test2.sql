@@ -32,6 +32,6 @@ STORED AS INPUTFORMAT
 OUTPUTFORMAT 
   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
 LOCATION
-  's3://sst-s3-mom-sedaap-uatizapp-denodo-vdp-queries-log/vdp-queries/'
+  's3://sst-s3-xxx-yyy-uatizapp-denodo-vdp-queries-log/vdp-queries/'
 TBLPROPERTIES (
   'classification'='csv')
