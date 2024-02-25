@@ -13,9 +13,11 @@ Pipeline will create S3 bucket, Gle DB and run Query using Athena and save resul
 
 
 
-======================================================================================================================================================
+================================================================
+
 https://safe.menlosecurity.com/https://aws.amazon.com/blogs/devops/monitoring-and-management-with-amazon-quicksight-and-athena-in-your-ci-cd-pipeline/
---------
+
+================================================================
 
 GitLab CICD TO COPYFILE TO S3:
 
