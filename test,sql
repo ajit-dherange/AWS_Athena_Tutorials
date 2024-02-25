@@ -1,0 +1,1 @@
+SELECT * FROM "db-athena-demo-008"."netflix" limit 10;
