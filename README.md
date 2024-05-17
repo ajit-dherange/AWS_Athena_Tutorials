@@ -33,6 +33,8 @@ https://safe.menlosecurity.com/https://aws.amazon.com/blogs/devops/monitoring-an
    
 gitlab.ci.yml
 ```
+copy_files_to_s3:
+
   image:
   
     name: amazon/aws-cli
