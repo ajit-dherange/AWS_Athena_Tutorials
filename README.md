@@ -30,7 +30,7 @@ AWS_ACCESS_KEY_ID (provided by AWS)
 AWS_SECRET_ACCESS_KEY (provided by AWS)
 
 gitlab.ci.yml
-
+```
   image:
   
     name: amazon/aws-cli
@@ -48,4 +48,4 @@ gitlab.ci.yml
 
 
     https://safe.menlosecurity.com/https://dev.to/akpvt/gitlab-ci-to-amazap-s3-3j57
-    
+    ```
