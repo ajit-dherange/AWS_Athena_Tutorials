@@ -47,5 +47,5 @@ gitlab.ci.yml
 
 
 
-    https://safe.menlosecurity.com/https://dev.to/akpvt/gitlab-ci-to-amazap-s3-3j57
+    #https://safe.menlosecurity.com/https://dev.to/akpvt/gitlab-ci-to-amazap-s3-3j57
     ```
